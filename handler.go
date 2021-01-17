@@ -42,6 +42,14 @@ func (s *NotifHandler) SendEmailNotif(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if m.Destination == "" || m.DestinationName == "" {
+		errMsg := fmt.Sprintf("Destination or destination name is empty")
+
+		w.WriteHeader(http.StatusBadRequest)
+		s.responseBuilder(w, errMsg)
+		return
+	}
+
 	m.Type = model.Email
 	m.From = "no-reply@kitabisa.com"
 	m.FromName = "No Reply"
